@@ -1,0 +1,6 @@
+# frontend/requirements.txt
+streamlit
+pandas
+numpy
+scipy
+altair   # se usares Altair em vez de seaborn no frontend

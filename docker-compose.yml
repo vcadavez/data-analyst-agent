@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./backend/data:/backend/data
+    environment:
+      - AGENT_LLM_MODE=tools
+      - LLM_MODEL=llama3:latest
+      - EMBEDDING_MODEL=nomic-embed-text
+      - OLLAMA_BASE_URL=http://192.168.0.119:11434
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+    depends_on:
+      - qdrant
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file: .env
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./backend/data:/backend/data
+    environment:
+      - BACKEND_URL=http://backend:8000   # Aqui o frontend sabe que backend é o serviço backend no docker-compose
+    depends_on:
+      - backend
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    volumes:
+      - qdrant_storage:/qdrant/storage
+      - qdrant_snapshots:/qdrant/snapshots
+    ports:
+        - "6333:6333"
+    env_file: .env
+
+volumes:
+  qdrant_storage:
+  qdrant_snapshots:
