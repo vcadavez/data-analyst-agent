@@ -13,8 +13,10 @@ class Settings(BaseSettings):
     agent_llm_mode: str = "tools"
     qdrant_host: str = "qdrant"
     qdrant_port: int = 6333
+    ollama_url: str = "http://localhost:11434"   # <-- Adicionado!
 
     class Config:
         env_file = ".env"
 
 settings = Settings()
+

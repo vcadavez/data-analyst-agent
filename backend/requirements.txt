@@ -1,3 +1,5 @@
+# backend/requirements.txt
+
 fastapi
 uvicorn[standard]
 pandas
@@ -13,6 +15,7 @@ llama-index-embeddings-ollama
 
 openai
 qdrant-client
+langchain
 langchain-core
 langchain-ollama
 langgraph

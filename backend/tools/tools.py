@@ -1,30 +1,14 @@
 # backend/tools.py
 
-
 from langchain.tools import tool
 import matplotlib.pyplot as plt
 import pandas as pd
 import base64
 from io import BytesIO
-from backend.config import settings
-
-
-
-from langchain.tools import tool
-import pandas as pd
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
-from backend.config import settings
-
-
-from langchain.tools import tool
 import sys
 from io import StringIO
-import pandas as pd
 import os
 from typing import List, Dict
-import matplotlib.pyplot as plt
 import seaborn as sns
 from statsmodels.stats.meta_analysis import effectsize_smd, combine_effects
 
@@ -32,8 +16,7 @@ from .export_subset_tool import export_subset_tool
 from .filter_data_tool import filter_data_tool
 from .meta_analysis_by_column_tool import meta_analysis_by_column_tool
 from backend.config import settings
-# from backend.llm_router import call_llm
-
+from backend.llm_router import call_llm
 from backend.indexer import load_index, query_index
 
 @tool
@@ -93,12 +76,15 @@ def count_rows(csv_path: str = settings.csv_path) -> str:
     return f"O ficheiro contém {len(df)} linhas."
 
 @tool
-def get_column_names(csv_path: str = settings.csv_path) -> List[str]:
+def get_column_names(csv_path: str = settings.csv_path) -> str:
     """Lista os nomes das colunas disponíveis no ficheiro CSV."""
     if not os.path.exists(csv_path):
-        return ["⚠️ O ficheiro 'uploaded.csv' não foi encontrado."]
-    df = pd.read_csv(csv_path)
-    return df.columns.tolist()
+        return "⚠️ O ficheiro 'uploaded.csv' não foi encontrado."
+    try:
+        df = pd.read_csv(csv_path)
+        return ", ".join(df.columns)
+    except Exception as e:
+        return f"⚠️ Erro ao ler o ficheiro: {str(e)}"
 
 @tool
 def summarize_by_category(column_name: str, csv_path: str = settings.csv_path) -> str:

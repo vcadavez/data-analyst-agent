@@ -1,6 +1,27 @@
-# frontend/requirements.txt
-streamlit
+# backend/requirements.txt
+
+fastapi
+uvicorn[standard]
 pandas
 numpy
 scipy
-altair   # se usares Altair em vez de seaborn no frontend
+
+llama-index-core
+llama-index-cli
+llama-index-llms-openai
+llama-index-vector-stores-qdrant
+llama-index-llms-ollama
+llama-index-embeddings-ollama
+
+openai
+qdrant-client
+langchain-core
+langchain-ollama
+langgraph
+langgraph-checkpoint-sqlite
+
+matplotlib
+seaborn
+statsmodels
+httpx
+python-multipart

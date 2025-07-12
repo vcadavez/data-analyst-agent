@@ -158,3 +158,11 @@ async def tool_endpoint(request: Request):
     except Exception as e:
         logger.error(f"Erro ao executar '{tool_name}': {e}")
         return JSONResponse(status_code=500, content={"error": f"Erro ao executar '{tool_name}': {str(e)}"})
+
+@app.get("/history/{thread_id}")
+async def get_history(thread_id: str):
+    import sqlite3
+    from langgraph.checkpoint.sqlite import SqliteSaver
+    conn = sqlite3.connect("agent_memory.db", check_same_thread=False)
+    memory = SqliteSaver(conn)
+    return memory.get_thread(thread_id)
